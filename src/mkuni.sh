@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-UNI_NAME="nikola_tasic_3698"
+UNI_NAME="tomislav_zivadinovic_3948"
 
 
 usage() {

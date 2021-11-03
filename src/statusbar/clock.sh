@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-date +'%H:%M:%S'
+date +'%H:%M:%S - %a, %d. %b ' 
 
 
 case $BLOCK_BUTTON in
