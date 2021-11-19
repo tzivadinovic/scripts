@@ -1,12 +1,14 @@
 #!/usr/bin/env sh
 
+
+
 TAP="Tapping Enabled ("
 TAP_DRAG="Tapping Drag Enabled ("
 NAT_SCROLL="Natural Scrolling Enabled ("
 MID_EMUL="Middle Emulation Enabled ("
 ACC_SPD="Accel Speed ("
 
-ID=$(xinput list | grep Touchpad | awk '{print $6}' | sed -e 's/id=//')
+ID=$(xinput list | grep -i Touchpad | awk '{print $6}' | sed -e 's/id=//')
 
 [ -z "$ID" ] && exit 1
 
