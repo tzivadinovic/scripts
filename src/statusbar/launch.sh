@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# killswitch
+SWITCH="$HOME/.cache/statusbar_$(basename $0)" 
+case $BLOCK_BUTTON in
+	2) [ -e "$SWITCH" ] && rm "$SWITCH" || touch "$SWITCH" ;;
+esac
+
+if [ -e "$SWITCH" ]; then
+	exit 0;
+fi
+
 [ -e "$HOME/.config/colors.sh" ] && . "$HOME/.config/colors.sh" 
 
 web_url="https://go4liftoff.com/launches"
@@ -51,4 +61,4 @@ fi
 
 
 
-echo "異 $launches<span color='$color'>$extra</span>"
+echo "󰑣 $launches<span color='$color'>$extra</span>"

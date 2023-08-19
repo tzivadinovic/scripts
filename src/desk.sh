@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 DESKFILE="/tmp/desk"
-[ ! -e "$DESKFILE" ] && exit 1
-[ -z "$(command -v "idasen-controller")" ] && exit 1
+[ ! -e "$DESKFILE" ] && touch "$DESKFILE"
+[ -z "$(command -v "idasen-controller")" ] && exit 127
 
 desk_move_to() {
 	height="$(dmenu -p height -f)"
@@ -11,11 +11,11 @@ desk_move_to() {
 }
 
 desk_stand() {
-	idasen-controller --forward --stand
+	idasen-controller --forward --move-to stand
 }
 
 desk_sit() {
-	idasen-controller --forward --sit
+	idasen-controller --forward --move-to sit
 }
 
 desk_mon() {

@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+SWITCH="$HOME/.cache/statusbar_$(basename $0)" 
+
 [ -f  "$HOME/.config/colors.sh" ] && . "$HOME/.config/colors.sh"
 [ -f  "$HOME/.cache/wal/colors.sh" ] && . "$HOME/.cache/wal/colors.sh"
 
@@ -18,8 +20,20 @@ do_update(){
 }
 
 case "$BLOCK_BUTTON" in
-	1) notify-send -i package -u low "updates available" "$(yup -l)" ;; 
-	2) yup -u && notify-send -i package -u low "syncing completed" ;; 
+	1) 
+		if [ $(dunstctl is-paused) = true ]; then
+			yup -l | awk -F ' ' '{for(i=1;i<=NF;i++){ if (i != 3) {print $i}}}' | \
+				zenity --list \
+				--column Name \
+				--column Current \
+				--column Updated \
+				--class=STATUSBAR_POPUP \
+				--title=yup \
+				--text="Available updates:"
+		else 
+			notify-send -i package -u low "updates available" "$(yup -l)"
+		fi ;;
+	2) [ -e "$SWITCH" ] && rm "$SWITCH" || touch "$SWITCH" ;;
 	3) do_update ;;
 esac 2>/dev/null 1>/dev/null
 
@@ -37,5 +51,9 @@ if [ $count -eq 0 ]; then
 	exit 0
 fi
 
-echo " <span color=\"$color\">$count</span>"
+if [ -e "$SWITCH" ]; then
+	echo "<span color=\"$color\">󰏔 </span>"
+else
+	echo "󰏔 <span color=\"$color\">$count</span>"
+fi
 

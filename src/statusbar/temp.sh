@@ -1,12 +1,15 @@
 #!/usr/bin/env sh
 
+SWITCH="$HOME/.cache/statusbar_$(basename $0)" 
+
 [ -e "$HOME/.config/colors.sh" ] && . "$HOME/.config/colors.sh" 
 
 case $BLOCK_BUTTON in
 	1) notify-send "CPU hogs" "$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)" ;;
+	2) [ -e "$SWITCH" ] && rm "$SWITCH" || touch "$SWITCH" ;;
 esac
 
-temp="$(sensors | awk '/Package id 0:/{print substr($4, 2)} /Tdie/{print substr($2, 2)}')"
+temp="$(sensors | awk '/Package id 0:/{print substr($4, 2)} /Tdie|Tctl/{print substr($2, 2)}')"
 temp_val="$(echo $temp | awk '{print substr($0, 1, length($0)-4)}')"
 
 color="$color7"
@@ -18,4 +21,10 @@ elif [ "$temp_val" -ge 40 ]; then
 	color="$theme13"
 fi
 
-printf "<span color=\"%s\">%s</span>\n" $color $temp
+ICON=""
+
+if [ -e "$SWITCH" ]; then
+	printf "<span color=\"%s\">%s</span>\n" $color $ICON
+else
+	printf "$ICON <span color=\"%s\">%s</span>\n" $color $temp
+fi
